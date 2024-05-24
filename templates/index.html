@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=typography,aspect-ratio"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.9"></script>
+    <title>Jarvis</title>
+</head>
+<body >
+    <h1 class="mb-4 text-center text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Langchain Jarvis</h1>
+    <table class="w-1/2 m-auto">
+        {% if response: %}
+            <tr>
+                <img class="max-w-full md:max-w-80 m-auto" src="../public/jarvis.jpeg"/>
+            </tr>        
+            <tr>
+                <td class="text-center">
+                    {{ response }}
+                </td>
+            </tr>        
+            <tr>
+                <td>
+                    <audio controls id="audioPlayer" autoplay="" class="m-auto">
+                        <source src="{{ sound_file }}?v={{ unique_id }}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </td>
+            </tr>
+        {% endif %}
+        <tr >
+            <td>    
+                <form action="/" method="post" >
+                    <textarea autofocus rows="4" class="block p-2.5 w-full sm:w-2/3 m-auto text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="query" id="query" placeholder="Type Here.."></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                    <input class="font-bold py-2 px-4 rounded bg-blue-500 text-white" type="submit" value="Enter"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <script>
+        (async () => {
+          const audioFile = "{{ sound_file }}?v={{ unique_id }}";
+          const response = await fetch(audioFile);
+          if (response.ok) {
+            document.getElementById('audioPlayer').style.display = 'block';
+          }
+        })();
+    </script>
+</body>
+</html>
